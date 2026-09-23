@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="632" viewBox="0 0 680 632" role="img" aria-labelledby="flowTitle flowDesc">
+<title id="flowTitle">Native modal flow over the external bus</title>
+<desc id="flowDesc">The frontend asks the companion app to show a route in a native modal with modal/open. The app presents the modal and loads the route. The page inside describes its header with modal/update, the app draws the bar and returns a tap with modal/action, and the page finishes by sending modal/close or modal/navigate, and can ask for more room with the same message. A page inside a modal can ask for a modal of its own the same way.</desc>
+<style>
+  .t { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 500; fill: #1f2328; }
+  .s { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 12px; fill: #57606a; }
+  .l { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; fill: #6e7781; }
+  .web rect { fill: #ddf4ff; stroke: #54aeff; }
+  .app rect { fill: #fff8c5; stroke: #d4a72c; }
+  .arr { stroke: #6e7781; stroke-width: 1.5; fill: none; }
+</style>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#6e7781" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<g class="web">
+  <rect x="40" y="56" width="200" height="56" rx="8" stroke-width="1"/>
+  <text class="t" x="140" y="74" text-anchor="middle" dominant-baseline="central">Main frontend</text>
+  <text class="s" x="140" y="94" text-anchor="middle" dominant-baseline="central">Sees hasNativeModal</text>
+</g>
+<g class="app">
+  <rect x="440" y="156" width="200" height="56" rx="8" stroke-width="1"/>
+  <text class="t" x="540" y="174" text-anchor="middle" dominant-baseline="central">Companion app</text>
+  <text class="s" x="540" y="194" text-anchor="middle" dominant-baseline="central">Presents the sheet</text>
+</g>
+<g class="web">
+  <rect x="40" y="256" width="200" height="56" rx="8" stroke-width="1"/>
+  <text class="t" x="140" y="274" text-anchor="middle" dominant-baseline="central">Page in the modal</text>
+  <text class="s" x="140" y="294" text-anchor="middle" dominant-baseline="central">The route it was given</text>
+</g>
+<g class="app">
+  <rect x="440" y="356" width="200" height="56" rx="8" stroke-width="1"/>
+  <text class="t" x="540" y="374" text-anchor="middle" dominant-baseline="central">App draws the bar</text>
+  <text class="s" x="540" y="394" text-anchor="middle" dominant-baseline="central">Bar, and room to fit</text>
+</g>
+<g class="web">
+  <rect x="40" y="456" width="200" height="56" rx="8" stroke-width="1"/>
+  <text class="t" x="140" y="474" text-anchor="middle" dominant-baseline="central">Page acts on it</text>
+  <text class="s" x="140" y="494" text-anchor="middle" dominant-baseline="central">View, modal, or exit</text>
+</g>
+<g class="app">
+  <rect x="440" y="556" width="200" height="56" rx="8" stroke-width="1"/>
+  <text class="t" x="540" y="574" text-anchor="middle" dominant-baseline="central">App dismisses it</text>
+  <text class="s" x="540" y="594" text-anchor="middle" dominant-baseline="central">Frontend goes onward</text>
+</g>
+
+<path d="M 240 84 L 320 84 L 320 170 L 432 170" class="arr" marker-end="url(#arrow)"/>
+<text class="l" x="250" y="58" dominant-baseline="central">modal/open</text>
+<text class="l" x="250" y="74" dominant-baseline="central">path, title, size</text>
+
+<path d="M 440 193 L 360 193 L 360 270 L 248 270" class="arr" marker-end="url(#arrow)"/>
+<text class="l" x="430" y="181" text-anchor="end" dominant-baseline="central">loads the path</text>
+
+<path d="M 240 293 L 320 293 L 320 370 L 432 370" class="arr" marker-end="url(#arrow)"/>
+<text class="l" x="250" y="275" dominant-baseline="central">modal/update</text>
+<text class="l" x="250" y="291" dominant-baseline="central">header, size</text>
+
+<path d="M 440 393 L 360 393 L 360 470 L 248 470" class="arr" marker-end="url(#arrow)"/>
+<text class="l" x="430" y="381" text-anchor="end" dominant-baseline="central">modal/action</text>
+
+<path d="M 240 493 L 320 493 L 320 584 L 432 584" class="arr" marker-end="url(#arrow)"/>
+<text class="l" x="250" y="467" dominant-baseline="central">modal/close</text>
+<text class="l" x="250" y="483" dominant-baseline="central">modal/navigate</text>
+</svg>
