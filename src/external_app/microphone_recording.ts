@@ -10,7 +10,7 @@ import type {
 } from "./external_messaging";
 
 export const canAppRecordMicrophone = (external?: ExternalMessaging) =>
-  Boolean(external?.config.hasMicrophoneRecording);
+  Boolean(external?.config.hasAudioRecorder);
 
 /**
  * Asks the app to start recording the microphone.

@@ -448,7 +448,7 @@ export interface ExternalConfig {
   hasEntityAddTo?: boolean; // Supports "Add to" from more-info dialog, with action coming from external app
   hasAssistSettings?: boolean; // Shows the "This device" section in voice assistant settings
   hasSplashscreen?: boolean; // App covers the frontend with its own loading screen until frontend/loaded, so the launch screen is removed without animation
-  hasMicrophoneRecording?: boolean; // App records the microphone itself with microphone/recording/start, used when the frontend has no secure context
+  hasAudioRecorder?: boolean; // App records the microphone itself with microphone/recording/start, used when the frontend has no secure context
 }
 
 export interface ExternalEntityAddToAction {
