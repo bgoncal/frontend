@@ -77,6 +77,26 @@ interface EMOutgoingMessageImportThreadCredentials extends EMMessage {
   type: "thread/import_credentials";
 }
 
+interface EMOutgoingMessageMicrophoneRecordingStart extends EMMessage {
+  type: "microphone/recording/start";
+}
+
+interface EMOutgoingMessageMicrophoneRecordingStop extends EMMessage {
+  type: "microphone/recording/stop";
+  payload: {
+    session_id: string;
+  };
+}
+
+export interface ExternalMicrophoneRecording {
+  session_id: string;
+  audio: string; // Base64 encoded
+  mime_type: string;
+  sample_rate: number;
+  channels: number;
+  duration: number; // Seconds
+}
+
 interface EMOutgoingMessageWithAnswer {
   "config/get": {
     request: EMOutgoingMessageConfigGet;
@@ -85,6 +105,16 @@ interface EMOutgoingMessageWithAnswer {
   "entity/add_to/get_actions": {
     request: EMOutgoingMessageEntityAddToGetActions;
     response: ExternalEntityAddToActions;
+  };
+  // Replies once the app is recording
+  "microphone/recording/start": {
+    request: EMOutgoingMessageMicrophoneRecordingStart;
+    response: { session_id: string };
+  };
+  // Replies with the recording, also when the app already ended it
+  "microphone/recording/stop": {
+    request: EMOutgoingMessageMicrophoneRecordingStop;
+    response: ExternalMicrophoneRecording;
   };
 }
 
@@ -361,6 +391,20 @@ export interface MatterCommissionFinish {
   success: boolean;
 }
 
+export type ExternalMicrophoneRecordingStopReason =
+  "background" | "interrupted" | "max_duration" | "replaced" | "failed";
+
+// Sent when the app ends a recording without the frontend stopping it, collect it with microphone/recording/stop
+export interface EMIncomingMessageMicrophoneRecordingStopped extends EMMessage {
+  id: number;
+  type: "command";
+  command: "microphone/recording/stopped";
+  payload: {
+    session_id: string;
+    reason: ExternalMicrophoneRecordingStopReason;
+  };
+}
+
 export interface EMIncomingMessageMatterCommissionFinish extends EMMessage {
   id: number;
   type: "command";
@@ -380,7 +424,8 @@ export type EMIncomingMessageCommands =
   | EMIncomingMessageImprovDeviceDiscovered
   | EMIncomingMessageImprovDeviceSetupDone
   | EMIncomingMessageMatterCommissionFinish
-  | EMIncomingMessageKioskModeSet;
+  | EMIncomingMessageKioskModeSet
+  | EMIncomingMessageMicrophoneRecordingStopped;
 
 type EMIncomingMessage =
   EMMessageResultSuccess | EMMessageResultError | EMIncomingMessageCommands;
@@ -403,6 +448,7 @@ export interface ExternalConfig {
   hasEntityAddTo?: boolean; // Supports "Add to" from more-info dialog, with action coming from external app
   hasAssistSettings?: boolean; // Shows the "This device" section in voice assistant settings
   hasSplashscreen?: boolean; // App covers the frontend with its own loading screen until frontend/loaded, so the launch screen is removed without animation
+  hasMicrophoneRecording?: boolean; // App records the microphone itself with microphone/recording/start, used when the frontend has no secure context
 }
 
 export interface ExternalEntityAddToAction {

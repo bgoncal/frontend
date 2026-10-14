@@ -19,6 +19,7 @@ import type {
   EMIncomingMessageImprovDeviceSetupDone,
   EMIncomingMessageBarCodeScanResult,
   EMIncomingMessageBarCodeScanAborted,
+  EMIncomingMessageMicrophoneRecordingStopped,
 } from "../../src/external_app/external_messaging";
 
 vi.mock("../../src/common/dom/fire_event", () => ({
@@ -239,6 +240,28 @@ describe("handleExternalMessage", () => {
     expect(fireEvent).toHaveBeenCalledWith(window, "improv-device-setup-done");
     expect(fireMessage).toHaveBeenCalledWith({
       id: 10,
+      type: "result",
+      success: true,
+      result: null,
+    });
+    expect(result).toBe(true);
+  });
+
+  it("handles microphone/recording/stopped command", () => {
+    const msg: EMIncomingMessageMicrophoneRecordingStopped = {
+      type: "command",
+      command: "microphone/recording/stopped",
+      id: 11,
+      payload: { session_id: "session-1", reason: "interrupted" },
+    };
+    const result = handleExternalMessage(hassMainEl, msg);
+    expect(fireEvent).toHaveBeenCalledWith(
+      window,
+      "microphone-recording-stopped",
+      { session_id: "session-1", reason: "interrupted" }
+    );
+    expect(fireMessage).toHaveBeenCalledWith({
+      id: 11,
       type: "result",
       success: true,
       result: null,

@@ -15,6 +15,7 @@ import type {
   EMIncomingMessageBarCodeScanAborted,
   EMIncomingMessageBarCodeScanResult,
   EMIncomingMessageCommands,
+  EMIncomingMessageMicrophoneRecordingStopped,
   ImprovDiscoveredDevice,
   MatterCommissionFinish,
 } from "./external_messaging";
@@ -99,6 +100,8 @@ export const handleExternalMessage = (
     barCodeListeners.forEach((listener) => listener(msg));
   } else if (msg.command === "kiosk_mode/set") {
     fireEvent(window, "hass-kiosk-mode", { enable: msg.payload.enable });
+  } else if (msg.command === "microphone/recording/stopped") {
+    fireEvent(window, "microphone-recording-stopped", msg.payload);
   } else {
     return false;
   }
@@ -118,6 +121,7 @@ declare global {
     "improv-discovered-device": ImprovDiscoveredDevice;
     "improv-device-setup-done": undefined;
     "matter-commission-finish": MatterCommissionFinish;
+    "microphone-recording-stopped": EMIncomingMessageMicrophoneRecordingStopped["payload"];
   }
 
   interface GlobalEventHandlersEventMap {
@@ -129,6 +133,9 @@ declare global {
     >;
     "matter-commission-finish": HASSDomEvent<
       HASSDomEvents["matter-commission-finish"]
+    >;
+    "microphone-recording-stopped": HASSDomEvent<
+      HASSDomEvents["microphone-recording-stopped"]
     >;
   }
 }
